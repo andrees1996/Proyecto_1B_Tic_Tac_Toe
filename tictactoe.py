@@ -19,9 +19,22 @@ def initial_state():
 
 
 def player(board):
-    """
-    Returns player who has the next turn on a board.
-    """
+
+    """si es el primer movimiento entonces , se establece x como primer movimiento y en este caso se compara con la funcion initial_state()"""
+    numero_piezas_X = 0
+    numero_piezas_O = 0
+    if board == initial_state():
+        return X
+
+    for fila in board:
+        """por cada fila se contra el numero de X e O que se encuentran en el tablero para de esta manera poder determinar el movmiento"""
+        numero_piezas_X = numero_piezas_X + fila.count(X);
+        numero_piezas_O = numero_piezas_O + fila.count(O)
+
+    if numero_piezas_X > numero_piezas_O
+        return O
+    if numero_piezas_O == numero_piezas_X
+        return X
     raise NotImplementedError
 
 
