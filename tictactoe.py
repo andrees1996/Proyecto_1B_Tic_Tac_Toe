@@ -4,6 +4,10 @@ Tic Tac Toe Player
 
 import math
 
+from Proyecto_1B_Tic_Tac_Toe.runner import board
+import math
+import copy
+
 X = "X"
 O = "O"
 EMPTY = None
@@ -29,22 +33,26 @@ def player(board):
     for fila in board:
         """por cada fila se contra el numero de X e O que se encuentran en el tablero para de esta manera poder determinar el movmiento"""
         numero_piezas_X = numero_piezas_X + fila.count(X);
-        numero_piezas_O = numero_piezas_O + fila.count(O)
+        numero_piezas_O = numero_piezas_O + fila.count(O);
 
-    if numero_piezas_X > numero_piezas_O
+    if numero_piezas_X > numero_piezas_O:
         return O
-    if numero_piezas_O == numero_piezas_X
+    elif numero_piezas_O == numero_piezas_X:
         return X
     raise NotImplementedError
 
 
 def actions(board):
-    """
-    Returns set of all possible actions (i, j) available on the board.
-    """
-    raise NotImplementedError
+    """Se debe devolver n conjunto de todas las acciones posibles que se pueden tomar en el tablero"""
+    conjunto_movimientos = []
+    """como se debe devolver una tupla, se tiene que realizar una matri bidimensional y recorrer en ella """
+    for fila in range(3):
+        for columna in range(3):
+            if board[fila][columna] == EMPTY:
+                conjunto_movimientos.append([fila, columna])
 
-
+    return conjunto_movimientos
+    
 def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
