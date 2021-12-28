@@ -1,10 +1,6 @@
 """
 Tic Tac Toe Player
 """
-
-
-
-from Proyecto_1B_Tic_Tac_Toe.runner import board
 import math
 import copy
 
@@ -32,15 +28,13 @@ def player(board):
 
     for fila in board:
         """por cada fila se contra el numero de X e O que se encuentran en el tablero para de esta manera poder determinar el movmiento"""
-        numero_piezas_X = numero_piezas_X + fila.count(X);
-        numero_piezas_O = numero_piezas_O + fila.count(O);
+        numero_piezas_X = numero_piezas_X + fila.count(X)
+        numero_piezas_O = numero_piezas_O + fila.count(O)
 
     if numero_piezas_X > numero_piezas_O:
         return O
     elif numero_piezas_O == numero_piezas_X:
         return X
-    raise NotImplementedError
-
 
 def actions(board):
     """Se debe devolver n conjunto de todas las acciones posibles que se pueden tomar en el tablero"""
@@ -50,19 +44,17 @@ def actions(board):
         for columna in range(3):
             if board[fila][columna] == EMPTY:
                 conjunto_movimientos.append([fila, columna])
-
     return conjunto_movimientos
 
 def result(board, action):
     """se realiza la copia del trablero"""
-    boardcopy = copy.deepcopy(board)
+    copia_board = copy.deepcopy(board)
 
-    if boardcopy[action[0]][action[1]] != EMPTY:
+    if copia_board[action[0]][action[1]] != EMPTY:
             raise IndexError
     else:
-        boardcopy[action[0]][action[1]] = player(boardcopy)
-        return boardcopy
-
+        copia_board[action[0]][action[1]] = player(copia_board)
+        return copia_board
 
 
 def winner(board):
@@ -80,8 +72,8 @@ def winner(board):
     for columna in range(len(board)):
         column = [fila[columna] for fila in board]
         columns.append(column)
-
-    for j in columns:
+    """si el numero de piezas X e O es igual a tres en cualquiera de las columnas se retorna X u O"""
+    for columna in columns:
         numero_piezas_X = columna.count(X)
         numero_piezas_O = columna.count(O)
         if numero_piezas_X == 3:
@@ -90,12 +82,12 @@ def winner(board):
             return O
 
     """se verifica si es que existio un ganador a trves de las diagonales de la tabla"""
-    if board[1][1] == O:
-        if (board[0][0] == 0 and board[2][2] == 0) or (board[0][2] == 0 and board[2][0] == 0):
-            return 0
 
-    if board[1][1] == X:
-        if (board[0][0] == X and board[2][2] == X) or (board[0][2] == X and board[2][0] == X):
+    """Se verifica si existio el ganador O a traves de las diagonales"""
+    if (board[1][1] == O and board[0][0] == O and board[2][2] == O) or (board[1][1] == O and board[0][2] == O and board[2][0] == O):
+        return 0
+    """Se verifica si existio el ganador X a traves de las diagonales"""
+    if (board[1][1] == X and board[0][0] == X and board[2][2] == X) or (board[1][1] == X and board[0][2] == X and board[2][0] == X):
             return X
 
     """Si existe empate"""
@@ -131,7 +123,36 @@ def utility(board):
 
 
 def minimax(board):
-    """
-    Returns the optimal action for the current player on the board.
-    """
-    raise NotImplementedError
+    jugador = player(board)
+
+    if jugador == X:
+        v = -math.inf
+        for movimiento in actions(board):
+            k = min_value(result(board, movimiento))  # FIXED
+            if k > v:
+                v = k
+                best_move = movimiento
+    else:
+        v = math.inf
+        for movimiento in actions(board):
+            k = max_value(result(board, movimiento))  # FIXED
+            if k < v:
+                v = k
+                best_move = movimiento
+    return best_move
+
+def max_value(board):
+    if terminal(board):
+        return utility(board)
+    v = -math.inf
+    for movimiento in actions(board):
+        v = max(v, min_value(result(board, movimiento)))
+    return v    #FIXED
+
+def min_value(board):
+    if terminal(board):
+        return utility(board)
+    v = math.inf
+    for movimiento in actions(board):
+        v = min(v, max_value(result(board, movimiento)))
+    return v    #FIXED
